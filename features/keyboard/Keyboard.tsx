@@ -1,37 +1,45 @@
-"use client";
-
-import { US_QWERTY_LAYOUT } from "./layouts/us-qwerty";
+import { KeyboardLayout } from "../spec/keyboardLayoutSchema";
 import { Key } from "./Key";
+import { US_QWERTY_LAYOUT } from "./layouts/us-qwerty";
+import { US_QWERTY_FULL_LAYOUT } from "./layouts/us-qwerty-full";
 
-function normalizeKey(key: string) {
-  return key.toLowerCase();
+// Configuration
+const UNIT = 60;
+const GAP = 4;
+
+// Function to adjust key widths to account for gaps
+function addGapCompensation(rows: KeyboardLayout["rows"], gap: number) {
+  return rows.map((row) =>
+    row.map((key) => ({
+      ...key,
+      adjustedWidth:
+        (key.widthScale || 1) * UNIT + ((key.widthScale || 1) - 1) * gap,
+    })),
+  );
 }
 
 export function Keyboard() {
-  // const document = useVisualizerStore(s => s.document);
-
-  // const activeKeys = new Set(
-  //   document
-  //     ? document.shortcuts.flatMap(s => s.keys).map(normalizeKey)
-  //     : []
-  // );
+  const layout = addGapCompensation(US_QWERTY_FULL_LAYOUT.rows, GAP);
 
   return (
-    <div className="inline-block space-y-2">
-      {US_QWERTY_LAYOUT.map((row, rowIndex) => (
-        <div
-          key={rowIndex}
-          className="flex gap-1"
-          style={{ width: "100%" }}
-        >
-          {row.map((keyDef, keyIndex) => (
-            <Key
-              key={`${rowIndex}-${keyIndex}`}
-              label={keyDef.label}
-              width={keyDef.width}
-              active={false}
-            />
-          ))}
+    <div className="flex flex-col bg-gray-100 p-4 gap-1">
+      {layout.map((row, index) => (
+        <div key={index} className="flex" style={{ gap: GAP + "px" }}>
+          {row.map((key) =>
+            key.id === null ? (
+              <div
+                key={Math.random()}
+                style={{ width: key.adjustedWidth + "px" }}
+              />
+            ) : (
+              <Key
+                key={key.id}
+                label={key.label}
+                width={key.adjustedWidth}
+                unit={UNIT}
+              />
+            ),
+          )}
         </div>
       ))}
     </div>

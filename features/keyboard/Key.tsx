@@ -1,22 +1,24 @@
-interface KeyProps {
+type KeyProps = {
   label: string;
-  width?: number;
-  active?: boolean;
-}
+  width: number;
+  unit: number;
+};
 
-export function Key({ label, width = 1, active = false }: KeyProps) {
+export function Key({ label, width, unit }: KeyProps) {
   return (
-    <div
-      style={{ flex: width }}
+    <button
+      type="button"
       className={[
-        "h-10 flex items-center justify-center",
-        "border rounded text-sm select-none",
-        active
-          ? "bg-black text-white border-black"
-          : "bg-white text-black border-gray-300"
+        "relative border rounded text-xs px-3 flex-none",
+        "focus:outline-none focus:ring-2 focus:ring-blue-500",
+        "transition-colors select-none",
       ].join(" ")}
+      style={{
+        width: width + "px",
+        height: unit + "px",
+      }}
     >
-      {label}
-    </div>
+      <span className="absolute top-1 left-1">{label}</span>
+    </button>
   );
 }

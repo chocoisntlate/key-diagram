@@ -1,4 +1,4 @@
-import { KeyDiagramDocument, KeyDiagramSchema } from "../spec/schema";
+import { KeyDiagramDocument, KeyDiagramSchema } from "../spec/keybindSchema";
 
 export type ImportResult =
   | { success: true; data: KeyDiagramDocument }
@@ -22,7 +22,7 @@ export function importKeyDiaJSON(raw: string): ImportResult {
     return {
       success: false,
       error: result.error.issues
-        .map(e => `${e.path.join(".")}: ${e.message}`)
+        .map((e) => `${e.path.join(".")}: ${e.message}`)
         .join("\n"),
     };
   }

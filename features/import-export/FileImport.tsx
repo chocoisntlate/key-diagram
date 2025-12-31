@@ -19,7 +19,7 @@ export function FileImport() {
       setError(result.error);
       return;
     }
-    console.log(result.data)
+    console.log(result.data);
   }
 
   return (
@@ -29,7 +29,7 @@ export function FileImport() {
           type="file"
           accept=".json,application/json"
           className="hidden"
-          onChange={e => {
+          onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) handleFile(file);
           }}
@@ -41,9 +41,7 @@ export function FileImport() {
       </label>
 
       {error && (
-        <pre className="text-red-600 text-sm whitespace-pre-wrap">
-          {error}
-        </pre>
+        <pre className="text-red-600 text-sm whitespace-pre-wrap">{error}</pre>
       )}
     </div>
   );

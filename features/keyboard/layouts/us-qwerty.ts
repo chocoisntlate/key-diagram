@@ -1,42 +1,85 @@
-import { KeyboardLayout } from "./types";
+import { KeyboardLayout } from "@/features/spec/keyboardLayoutSchema";
 
-export const US_QWERTY_LAYOUT: KeyboardLayout = [
-  [
-    { label: "Esc" },
-    { label: "1" }, { label: "2" }, { label: "3" }, { label: "4" },
-    { label: "5" }, { label: "6" }, { label: "7" }, { label: "8" },
-    { label: "9" }, { label: "0" },
-    { label: "-" }, { label: "=" },
-    { label: "Backspace", width: 2 }
+export const US_QWERTY_LAYOUT: KeyboardLayout = {
+  name: "US QWERTY 60% Aligned",
+  description:
+    "60% US QWERTY layout with properly aligned keys (15 units per row)",
+  rows: [
+    // Row 1: Number row (15 units total)
+    [
+      { id: "grave", label: "`" },
+      { id: "1", label: "1" },
+      { id: "2", label: "2" },
+      { id: "3", label: "3" },
+      { id: "4", label: "4" },
+      { id: "5", label: "5" },
+      { id: "6", label: "6" },
+      { id: "7", label: "7" },
+      { id: "8", label: "8" },
+      { id: "9", label: "9" },
+      { id: "0", label: "0" },
+      { id: "minus", label: "-" },
+      { id: "equals", label: "=" },
+      { id: "backspace", label: "Backspace", widthScale: 2 },
+    ],
+    // Row 2: QWERTY row (15 units total)
+    [
+      { id: "tab", label: "Tab", widthScale: 1.5 },
+      { id: "q", label: "Q" },
+      { id: "w", label: "W" },
+      { id: "e", label: "E" },
+      { id: "r", label: "R" },
+      { id: "t", label: "T" },
+      { id: "y", label: "Y" },
+      { id: "u", label: "U" },
+      { id: "i", label: "I" },
+      { id: "o", label: "O" },
+      { id: "p", label: "P" },
+      { id: "bracket-left", label: "[" },
+      { id: "bracket-right", label: "]" },
+      { id: "backslash", label: "\\", widthScale: 1.5 },
+    ],
+    // Row 3: ASDF row (15 units total)
+    [
+      { id: "caps", label: "Caps", widthScale: 1.75 },
+      { id: "a", label: "A" },
+      { id: "s", label: "S" },
+      { id: "d", label: "D" },
+      { id: "f", label: "F" },
+      { id: "g", label: "G" },
+      { id: "h", label: "H" },
+      { id: "j", label: "J" },
+      { id: "k", label: "K" },
+      { id: "l", label: "L" },
+      { id: "semicolon", label: ";" },
+      { id: "quote", label: "'" },
+      { id: "enter", label: "Enter", widthScale: 2.25 },
+    ],
+    // Row 4: ZXCV row (15 units total)
+    [
+      { id: "shift-left", label: "Shift", widthScale: 2.25 },
+      { id: "z", label: "Z" },
+      { id: "x", label: "X" },
+      { id: "c", label: "C" },
+      { id: "v", label: "V" },
+      { id: "b", label: "B" },
+      { id: "n", label: "N" },
+      { id: "m", label: "M" },
+      { id: "comma", label: "," },
+      { id: "period", label: "." },
+      { id: "slash", label: "/" },
+      { id: "shift-right", label: "Shift", widthScale: 2.75 },
+    ],
+    // Row 5: Bottom row (15 units total)
+    [
+      { id: "ctrl-left", label: "Ctrl", widthScale: 1.25 },
+      { id: "meta-left", label: "Win", widthScale: 1.25 },
+      { id: "alt-left", label: "Alt", widthScale: 1.25 },
+      { id: "space", label: "Space", widthScale: 6.25 },
+      { id: "alt-right", label: "Alt", widthScale: 1.25 },
+      { id: "fn", label: "Fn", widthScale: 1.25 },
+      { id: "menu", label: "Menu", widthScale: 1.25 },
+      { id: "ctrl-right", label: "Ctrl", widthScale: 1.25 },
+    ],
   ],
-  [
-    { label: "Tab", width: 1.5 },
-    { label: "Q" }, { label: "W" }, { label: "E" }, { label: "R" },
-    { label: "T" }, { label: "Y" }, { label: "U" }, { label: "I" },
-    { label: "O" }, { label: "P" },
-    { label: "[" }, { label: "]" }, { label: "\\", width: 1.5 }
-  ],
-  [
-    { label: "CapsLock", width: 1.75 },
-    { label: "A" }, { label: "S" }, { label: "D" }, { label: "F" },
-    { label: "G" }, { label: "H" }, { label: "J" }, { label: "K" },
-    { label: "L" }, { label: ";" }, { label: "'" },
-    { label: "Enter", width: 2.25 }
-  ],
-  [
-    { label: "Shift", width: 2.25 },
-    { label: "Z" }, { label: "X" }, { label: "C" }, { label: "V" },
-    { label: "B" }, { label: "N" }, { label: "M" },
-    { label: "," }, { label: "." }, { label: "/" },
-    { label: "Shift", width: 2.75 }
-  ],
-  [
-    { label: "Ctrl", width: 1.25 },
-    { label: "Alt", width: 1.25 },
-    { label: "Meta", width: 1.25 },
-    { label: "Space", width: 6 },
-    { label: "Meta", width: 1.25 },
-    { label: "Alt", width: 1.25 },
-    { label: "Ctrl", width: 1.25 }
-  ]
-];
+};

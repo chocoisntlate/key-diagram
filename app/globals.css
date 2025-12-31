@@ -1,2 +1,6 @@
 @import "tailwindcss";
 
+:root {
+  --key-unit: 52px;
+  --keyboard-gap: 6px;
+}
