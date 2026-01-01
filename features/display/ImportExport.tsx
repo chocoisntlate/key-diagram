@@ -3,13 +3,14 @@
 
 import { useRef } from "react";
 
-type ImportExportButtonProps = {
+type ImportExportButtonProps<T> = {
   title: string;
   onClick?: () => void;
-  onFileSelect?: (file: File) => void;
+  onFileSelect?: (file: File, contextSetter?: React.Dispatch<React.SetStateAction<T>>) => void;
+  contextSetter?:  React.Dispatch<React.SetStateAction<T>>;
 };
 
-export function ImportExportButton({ title, onClick, onFileSelect }: ImportExportButtonProps) {
+export function ImportExportButton<T>({ title, onClick, onFileSelect, contextSetter }: ImportExportButtonProps<T>) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
@@ -22,7 +23,7 @@ export function ImportExportButton({ title, onClick, onFileSelect }: ImportExpor
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && onFileSelect) onFileSelect(file);
+    if (file && onFileSelect) onFileSelect(file, contextSetter);
   };
 
   return (
