@@ -48,11 +48,6 @@ export const US_QWERTY_FULL_LAYOUT: KeyboardLayout = {
       { id: "insert", label: "Ins" },
       { id: "home", label: "Home" },
       { id: "page-up", label: "PgUp" },
-      { id: null, label: "", widthScale: 0.25 },
-      { id: "numlock", label: "Num" },
-      { id: "num-slash", label: "/" },
-      { id: "num-asterisk", label: "*" },
-      { id: "num-minus", label: "-" },
     ],
     // QWERTY row
     [
@@ -74,11 +69,6 @@ export const US_QWERTY_FULL_LAYOUT: KeyboardLayout = {
       { id: "delete", label: "Del" },
       { id: "end", label: "End" },
       { id: "page-down", label: "PgDn" },
-      { id: null, label: "", widthScale: 0.25 },
-      { id: "num-7", label: "7" },
-      { id: "num-8", label: "8" },
-      { id: "num-9", label: "9" },
-      { id: "num-plus", label: "+" },
     ],
     // ASDF row
     [
@@ -95,11 +85,6 @@ export const US_QWERTY_FULL_LAYOUT: KeyboardLayout = {
       { id: "semicolon", label: ";" },
       { id: "quote", label: "'" },
       { id: "enter", label: "Enter", widthScale: 2.25 },
-      { id: null, label: "", widthScale: 3.5 },
-      { id: "num-4", label: "4" },
-      { id: "num-5", label: "5" },
-      { id: "num-6", label: "6" },
-      { id: null, label: "", widthScale: 1 },
     ],
     // ZXCV row
     [
@@ -117,11 +102,6 @@ export const US_QWERTY_FULL_LAYOUT: KeyboardLayout = {
       { id: "shift-right", label: "Shift", widthScale: 2.75 },
       { id: null, label: "", widthScale: 1.25 },
       { id: "arrow-up", label: "↑" },
-      { id: null, label: "", widthScale: 1.25 },
-      { id: "num-1", label: "1" },
-      { id: "num-2", label: "2" },
-      { id: "num-3", label: "3" },
-      { id: "num-enter", label: "Enter" },
     ],
     // Bottom row
     [
@@ -137,10 +117,6 @@ export const US_QWERTY_FULL_LAYOUT: KeyboardLayout = {
       { id: "arrow-left", label: "←" },
       { id: "arrow-down", label: "↓" },
       { id: "arrow-right", label: "→" },
-      { id: null, label: "", widthScale: 0.25 },
-      { id: "num-0", label: "0", widthScale: 2 },
-      { id: "num-period", label: "." },
-      { id: null, label: "", widthScale: 1 },
     ],
   ],
 };
