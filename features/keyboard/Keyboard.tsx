@@ -7,7 +7,7 @@ import { Key } from "./Key";
 import { US_QWERTY_FULL_LAYOUT } from "./layouts/us-qwerty-full";
 
 // Configuration
-const UNIT = 60;
+const UNIT = 48;
 const GAP = 4;
 
 // --- helpers ------------------------------------------------------

@@ -1,6 +1,3 @@
-import { text } from "stream/consumers";
-import { ShortcutSchema } from "../spec/keybindSchema";
-
 type KeyProps = {
   label: string;
   width: number;
@@ -17,7 +14,7 @@ export function Key({ label, width, unit, description, onClick, isPressed }: Key
       type="button"
       onClick={onClick}
       className={[
-        "relative flex items-center justify-center",
+        "relative flex items-center justify-center group",
         "rounded-md border",
         "text-xs font-medium",
         "shadow-sm",
@@ -31,10 +28,21 @@ export function Key({ label, width, unit, description, onClick, isPressed }: Key
         height: unit + "px",
       }}
     >
-      <span className="absolute top-1 left-1">{label}</span>
-      {description && 
-        <span className="description text-[0.6rem]">{description}</span>
-      } 
+      <span className="absolute top-1 left-1.5 text-xs">
+        {label}
+      </span>
+      
+      {description && (
+        <>
+          <span className="absolute bottom-1 left-1 right-1 text-[0.6rem] leading-tight text-center px-0.5 font-medium opacity-75 truncate">
+            {description}
+          </span>
+          
+          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-10 shadow-lg">
+            {description}
+          </span>
+        </>
+      )} 
     </button>
   );
 }

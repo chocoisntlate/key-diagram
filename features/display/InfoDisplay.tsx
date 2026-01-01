@@ -17,10 +17,9 @@ export function KeyboardPanel({
   keyDiagram,
   keyboardLayout,
 }: KeyboardPanelProps) {
-  const [showLayout, setShowLayout] = useState(false);
 
   return (
-    <section className="flex w-full max-w-md flex-col gap-4 rounded-xl p-4">
+    <section className="flex justify-center w-full max-w-md gap-4 rounded-xl p-4">
       <InfoRow
         title="Diagram"
         name={keyDiagram.name}
@@ -45,16 +44,6 @@ export function KeyboardPanel({
           </>
         }
       />
-
-      <button
-        type="button"
-        onClick={() => setShowLayout((v) => !v)}
-        className="text-xs font-medium text-gray-500 hover:text-gray-700 transition-colors"
-      >
-        {showLayout ? "Hide layout info" : "Show layout info"}
-      </button>
-
-      {showLayout && (
         <InfoRow
           title="Layout"
           name={keyboardLayout.name}
@@ -79,7 +68,6 @@ export function KeyboardPanel({
             </>
           }
         />
-      )}
     </section>
   );
 }
@@ -110,7 +98,10 @@ type InfoRowProps = {
 
 function InfoRow({ title, name, description, meta, actions }: InfoRowProps) {
   return (
-    <div className="flex items-center gap-x-3 rounded-lg border border-gray-200 bg-white px-5 py-4 shadow-sm relative">
+    <div className="flex items-center gap-x-3 
+                    rounded-lg border border-gray-200 bg-white
+                   px-5 py-4 shadow-sm relative w-full"
+    >
       {/* Top-left info icon */}
       {meta && (
         <div className="absolute top-3 left-3">
