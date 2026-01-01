@@ -21,7 +21,6 @@ export function Key({ label, width, unit, description, onClick, isPressed }: Key
         "rounded-md border",
         "text-xs font-medium",
         "shadow-sm",
-        "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1",
         "transition-all select-none flex-none",
         isPressed 
           ? "bg-blue-500 border-blue-600 text-white shadow-inner"
@@ -34,7 +33,7 @@ export function Key({ label, width, unit, description, onClick, isPressed }: Key
     >
       <span className="absolute top-1 left-1">{label}</span>
       {description && 
-        <span className="description">{description}</span>
+        <span className="description text-[0.6rem]">{description}</span>
       } 
     </button>
   );
