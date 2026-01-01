@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import { KeyDiagram } from "../spec/keybindSchema";
 import { KeyboardLayout } from "../spec/keyboardLayoutSchema";
 import { Key } from "./Key";
-import { US_QWERTY_FULL_LAYOUT } from "./layouts/us-qwerty-full";
+import { useKeyboard } from "./KeyboardContext";
 
 // Configuration
 const UNIT = 48;
@@ -61,14 +61,16 @@ function findContinuations(
 
 // --- component ----------------------------------------------------
 
-export function Keyboard({ diagram }: { diagram: KeyDiagram | null }) {
+export function Keyboard() {
+  const { keyDiagram, keyLayout } = useKeyboard();
+
   const [pressedKeys, setPressedKeys] = useState<Set<string>>(
     () => new Set(),
   );
 
   const layout = useMemo(
-    () => addGapCompensation(US_QWERTY_FULL_LAYOUT.rows, GAP),
-    [],
+    () => addGapCompensation(keyLayout.rows, GAP),
+    [keyLayout],
   );
 
   const toggleKey = useCallback((keyId: string | null) => {
@@ -83,18 +85,18 @@ export function Keyboard({ diagram }: { diagram: KeyDiagram | null }) {
 
   const getKeyDescription = useCallback(
     (keyId: string): string | undefined => {
-      if (!diagram || pressedKeys.size === 0) return;
+      if (!keyDiagram || pressedKeys.size === 0) return;
 
       if (pressedKeys.has(keyId)) {
         const completed = findCompletedShortcut(
-          diagram,
+          keyDiagram,
           pressedKeys,
         );
         return completed?.displayKey;
       }
 
       const continuations = findContinuations(
-        diagram,
+        keyDiagram,
         pressedKeys,
         keyId,
       );
@@ -107,7 +109,7 @@ export function Keyboard({ diagram }: { diagram: KeyDiagram | null }) {
 
       return;
     },
-    [diagram, pressedKeys],
+    [keyDiagram, pressedKeys],
   );
 
   return (

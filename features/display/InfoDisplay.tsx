@@ -1,22 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
-import { KeyDiagram } from "../spec/keybindSchema";
-import { KeyboardLayout } from "../spec/keyboardLayoutSchema";
+import { ImportExportButton } from "../import-export/Buttons";
+import { useKeyboard } from "../keyboard/KeyboardContext";
 
 /* ------------------------------------------------------------------ */
 /* Keyboard panel with diagram + optional layout info                 */
 /* ------------------------------------------------------------------ */
 
-type KeyboardPanelProps = {
-  keyDiagram: KeyDiagram;
-  keyboardLayout: KeyboardLayout;
-};
 
-export function KeyboardPanel({
-  keyDiagram,
-  keyboardLayout,
-}: KeyboardPanelProps) {
+export function KeyboardPanel() {
+  const { keyDiagram, keyLayout } = useKeyboard();
+
+  const importDiagramRef = React.useRef<HTMLInputElement>(null);
 
   return (
     <section className="flex justify-center w-full max-w-md gap-4 rounded-xl p-4">
@@ -39,22 +35,22 @@ export function KeyboardPanel({
         }
         actions={
           <>
-            <PanelButton>Import</PanelButton>
-            <PanelButton>Export</PanelButton>
+            <ImportExportButton title="Import" onFileSelect={() => {}} />
+            <ImportExportButton title="Export" />
           </>
         }
       />
         <InfoRow
           title="Layout"
-          name={keyboardLayout.name}
-          description={keyboardLayout.description}
+          name={keyLayout.name}
+          description={keyLayout.description}
           meta={
             <>
-              <div>Rows: {keyboardLayout.rows.length}</div>
+              <div>Rows: {keyLayout.rows.length}</div>
               <div>
                 Keys:{" "}
                 {new Set(
-                  keyboardLayout.rows.flatMap((r) =>
+                  keyLayout.rows.flatMap((r) =>
                     r.map((k) => k.id).filter(Boolean),
                   ),
                 ).size}
@@ -63,28 +59,12 @@ export function KeyboardPanel({
           }
           actions={
             <>
-              <PanelButton>Import</PanelButton>
-              <PanelButton>Export</PanelButton>
+              <ImportExportButton title="Import" onFileSelect={() => {}} />
+              <ImportExportButton title="Export" />
             </>
           }
         />
     </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Shared primitives                                                   */
-/* ------------------------------------------------------------------ */
-
-type PanelButtonProps = {
-  children: React.ReactNode;
-};
-
-function PanelButton({ children }: PanelButtonProps) {
-  return (
-    <button className="rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors">
-      {children}
-    </button>
   );
 }
 
