@@ -1,21 +1,25 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
-import { KeyDiagram } from "../spec/keybindSchema";
-import { KeyboardLayout } from "../spec/keyboardLayoutSchema";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { KeyboardLayout } from "@/features/spec/keyboardLayoutSchema";
+import { KeyDiagram, Shortcut } from "../spec/keybindSchema";
 import { Key } from "./Key";
 import { useKeyboard } from "./KeyboardContext";
+import KeybindEditor from "./KeybindEditor";
+import { getKeyDescription } from "./description";
 
+// ------------------------------------------------------------------
 // Configuration
+// ------------------------------------------------------------------
+
 const UNIT = 48;
 const GAP = 4;
 
-// --- helpers ------------------------------------------------------
+// ------------------------------------------------------------------
+// Helpers
+// ------------------------------------------------------------------
 
-function addGapCompensation(
-  rows: KeyboardLayout["rows"],
-  gap: number,
-) {
+function addGapCompensation(rows: KeyboardLayout["rows"], gap: number) {
   return rows.map((row) =>
     row.map((key) => ({
       ...key,
@@ -26,19 +30,42 @@ function addGapCompensation(
   );
 }
 
-// --- component ----------------------------------------------------
+// ------------------------------------------------------------------
+// Component
+// ------------------------------------------------------------------
 
 export function Keyboard() {
-  const { keyDiagram, keyLayout } = useKeyboard();
+  const { keyDiagram, keyLayout, editMode } = useKeyboard();
+  const [pressedKeys, setPressedKeys] = useState<Set<string>>(() => new Set(),);
+  const [editingKey, setEditingKey] = useState<string | null>(null);
+  const [editingShortcuts, setEditingShortcuts] = useState<KeyDiagram["shortcuts"]>([]);
 
-  const [pressedKeys, setPressedKeys] = useState<Set<string>>(
-    () => new Set(),
-  );
+  const keyCandidatesMap = useMemo(() => {
+    if (!keyDiagram) return new Map<string, Shortcut[]>();
+
+    const map = new Map<string, Shortcut[]>();
+
+    for (const shortcut of keyDiagram.shortcuts) {
+      const key = shortcut.displayKey;
+
+      if (!map.has(key)) {
+        map.set(key, []);
+      }
+
+      map.get(key)!.push(shortcut);
+    }
+
+    return map;
+  }, [keyLayout, keyDiagram]);
 
   const layout = useMemo(
     () => addGapCompensation(keyLayout.rows, GAP),
-    [keyLayout],
+    [keyLayout, keyDiagram],
   );
+
+  // ------------------------------------------------------------------
+  // Interaction
+  // ------------------------------------------------------------------
 
   const toggleKey = useCallback((keyId: string | null) => {
     if (!keyId) return;
@@ -50,93 +77,78 @@ export function Keyboard() {
     });
   }, []);
 
-  const getKeyDescription = useCallback(
-    (keyId: string): string[] | undefined => {
-      if (!keyDiagram) return;
+  const editKey = useCallback(
+    (keyId: string | null) => {
+      if (!keyId || !keyDiagram) return;
 
-      const shortcutCandidates = [];
-      for (const shortcut of keyDiagram.shortcuts) {
-        if (shortcut.displayKey == keyId) shortcutCandidates.push(shortcut);
-      }
+      const shortcutsForKey = keyDiagram.shortcuts.filter(
+        (s) => s.displayKey === keyId,
+      );
 
-      for (const candidate of shortcutCandidates) {
-        const matches = [...pressedKeys].filter((k) =>
-          candidate.keys.includes(k),
-        );
-
-        // everything match perfectly
-        if (
-          pressedKeys.size === candidate.keys.length &&
-          matches.length === candidate.keys.length
-            ) return candidate.description;
-
-
-        // partial match
-        if (
-          matches.length === candidate.keys.length - 1 &&
-          pressedKeys.size === matches.length &&
-          !matches.includes(candidate.displayKey)
-            ) return candidate.description;
-      }
-
-
-
-
-      
-      // if (pressedKeys.has(keyId)) {
-      //   const completed = findCompletedShortcut(
-      //     keyDiagram,
-      //     pressedKeys,
-      //   );
-      //   return completed?.displayKey;
-      // }
-
-      // const continuations = findContinuations(
-      //   keyDiagram,
-      //   pressedKeys,
-      //   keyId,
-      // );
-
-      // if (continuations.length > 0) {
-      //   return continuations
-      //     .map((s) => s.displayKey)
-      //     .join(" / ");
-      // }
-
-      return;
+      setEditingKey(keyId);
+      setEditingShortcuts(shortcutsForKey);
     },
-    [keyDiagram, pressedKeys],
+    [keyDiagram],
   );
+
+  // reset interaction state when toggling modes
+  useEffect(() => {
+    setPressedKeys(new Set());
+    setEditingKey(null);
+    setEditingShortcuts([]);
+  }, [editMode]);
+
+
+  // ------------------------------------------------------------------
+  // Render
+  // ------------------------------------------------------------------
 
   return (
-    <div className="flex flex-col gap-1 rounded-xl p-3 shadow-md border border-gray-300 w-fit">
-      {layout.map((row, rowIndex) => (
-        <div
-          key={rowIndex}
-          className="flex"
-          style={{ gap: GAP }}
-        >
-          {row.map((key, keyIndex) =>
-            key.id === null ? (
-              <div
-                key={`gap-${rowIndex}-${keyIndex}`}
-                className="key-gap flex-none"
-                style={{ width: key.adjustedWidth }}
-              />
-            ) : (
-              <Key
-                key={key.id}
-                label={key.label}
-                width={key.adjustedWidth}
-                unit={UNIT}
-                description={getKeyDescription(key.id)}
-                onClick={() => toggleKey(key.id)}
-                isPressed={pressedKeys.has(key.id)}
-              />
-            ),
-          )}
-        </div>
-      ))}
-    </div>
+    <>
+      <div className="flex flex-col gap-1 rounded-xl p-3 shadow-md border border-gray-300 w-fit">
+        {layout.map((row, rowIndex) => (
+          <div key={rowIndex} className="flex" style={{ gap: GAP }}>
+            {row.map((key, keyIndex) =>
+              key.id === null ? (
+                <div
+                  key={`gap-${rowIndex}-${keyIndex}`}
+                  className="flex-none"
+                  style={{ width: key.adjustedWidth }}
+                />
+              ) : (
+                <Key
+                  key={key.id}
+                  label={key.label}
+                  width={key.adjustedWidth}
+                  unit={UNIT}
+                  description={getKeyDescription(keyCandidatesMap.get(key.id), pressedKeys)}
+                  candidateCount={keyCandidatesMap.get(key.id)?.length ?? 0}
+                  isPressed={pressedKeys.has(key.id)}
+                  onClick={() =>
+                    editMode ? editKey(key.id) : toggleKey(key.id)
+                  }
+                />
+              ),
+            )}
+          </div>
+        ))}
+      </div>
+
+      {editingKey && (
+        <KeybindEditor
+          keyId={editingKey}
+          shortcuts={editingShortcuts}
+          onClose={() => {
+            setEditingKey(null);
+            setEditingShortcuts([]);
+          }}
+        />
+      )}
+    </>
   );
 }
+
+// ------------------------------------------------------------------
+// Editor stub (intentionally minimal)
+// ------------------------------------------------------------------
+

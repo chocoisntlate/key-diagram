@@ -5,6 +5,18 @@ export const VSCODE_SHORTCUTS: KeyDiagram = {
   description: "Common VS Code keyboard shortcuts",
   shortcuts: [
     {
+      description: ["Have a great day!"],
+      keys: ["a"],
+      displayKey: "a",
+      tag: "Edit"
+    },
+    {
+      description: ["Test"],
+      keys: ["shift-left", "c"],
+      displayKey: "c",
+      tag: "Edit"
+    },
+    {
       description: ["Copy selected text", "and do something else"],
       keys: ["ctrl-left", "c"],
       displayKey: "c",

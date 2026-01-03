@@ -17,3 +17,4 @@ export const KeyDiagramSchema = z.object({
 });
 
 export type KeyDiagram = z.infer<typeof KeyDiagramSchema>;
+export type Shortcut = KeyDiagram["shortcuts"][number];
