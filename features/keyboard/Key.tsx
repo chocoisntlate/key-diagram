@@ -2,7 +2,7 @@ type KeyProps = {
   label: string;
   width: number;
   unit: number;
-  description?: string;
+  description?: string[];
 
   onClick: () => void;
   isPressed: boolean;
@@ -32,17 +32,37 @@ export function Key({ label, width, unit, description, onClick, isPressed }: Key
         {label}
       </span>
       
-      {description && (
-        <>
-          <span className="absolute bottom-1 left-1 right-1 text-[0.6rem] leading-tight text-center px-0.5 font-medium opacity-75 truncate">
-            {description}
-          </span>
-          
-          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-10 shadow-lg">
-            {description}
-          </span>
-        </>
-      )} 
+    {description && (
+      <>
+        <span className="absolute bottom-1 left-1 right-1 text-[0.6rem] leading-tight text-center px-0.5 font-medium opacity-75 truncate">
+          {description.length > 1 ? (
+            <>
+              <span className="ml-1 opacity-60">+{description.length}</span>
+            </>
+          ) : (
+            description[0]
+          )}
+
+        </span>
+
+        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-10 shadow-lg">
+          <ul className="list-disc list-inside whitespace-nowrap">
+            {description.length > 1 ? (
+              <>
+                {
+                  description.map((item, i) => (
+                  <li key={i}>{item}</li>))
+                }
+              </>
+            ) : (
+              description[0]
+          )}
+
+          </ul>
+        </span>
+      </>
+    )}
+
     </button>
   );
 }

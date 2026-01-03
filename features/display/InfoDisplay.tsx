@@ -131,7 +131,7 @@ function InfoRow({ title, name, description, meta, actions }: InfoRowProps) {
         </div>
       )}
 
-      <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500 justify-self-start w-max">
+      <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500 justify-self-start w-max"> 
         {title}
       </h2>
 

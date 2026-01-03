@@ -26,39 +26,6 @@ function addGapCompensation(
   );
 }
 
-function findCompletedShortcut(
-  diagram: KeyDiagram,
-  pressedKeys: Set<string>,
-) {
-  return diagram.shortcuts.find((shortcut) => {
-    const shortcutKeys = new Set(shortcut.keys);
-    return (
-      shortcutKeys.size === pressedKeys.size &&
-      [...shortcutKeys].every((k) => pressedKeys.has(k))
-    );
-  });
-}
-
-function findContinuations(
-  diagram: KeyDiagram,
-  pressedKeys: Set<string>,
-  nextKey: string,
-) {
-  const pressedArray = [...pressedKeys];
-
-  return diagram.shortcuts.filter((shortcut) => {
-    const { keys } = shortcut;
-
-    const matchesPrefix = pressedArray.every(
-      (pk, i) => keys[i] === pk,
-    );
-
-    const isNextKey = keys[pressedArray.length] === nextKey;
-
-    return matchesPrefix && isNextKey;
-  });
-}
-
 // --- component ----------------------------------------------------
 
 export function Keyboard() {
@@ -84,28 +51,57 @@ export function Keyboard() {
   }, []);
 
   const getKeyDescription = useCallback(
-    (keyId: string): string | undefined => {
-      if (!keyDiagram || pressedKeys.size === 0) return;
+    (keyId: string): string[] | undefined => {
+      if (!keyDiagram) return;
 
-      if (pressedKeys.has(keyId)) {
-        const completed = findCompletedShortcut(
-          keyDiagram,
-          pressedKeys,
+      const shortcutCandidates = [];
+      for (const shortcut of keyDiagram.shortcuts) {
+        if (shortcut.displayKey == keyId) shortcutCandidates.push(shortcut);
+      }
+
+      for (const candidate of shortcutCandidates) {
+        const matches = [...pressedKeys].filter((k) =>
+          candidate.keys.includes(k),
         );
-        return completed?.displayKey;
+
+        // everything match perfectly
+        if (
+          pressedKeys.size === candidate.keys.length &&
+          matches.length === candidate.keys.length
+            ) return candidate.description;
+
+
+        // partial match
+        if (
+          matches.length === candidate.keys.length - 1 &&
+          pressedKeys.size === matches.length &&
+          !matches.includes(candidate.displayKey)
+            ) return candidate.description;
       }
 
-      const continuations = findContinuations(
-        keyDiagram,
-        pressedKeys,
-        keyId,
-      );
 
-      if (continuations.length > 0) {
-        return continuations
-          .map((s) => s.displayKey)
-          .join(" / ");
-      }
+
+
+      
+      // if (pressedKeys.has(keyId)) {
+      //   const completed = findCompletedShortcut(
+      //     keyDiagram,
+      //     pressedKeys,
+      //   );
+      //   return completed?.displayKey;
+      // }
+
+      // const continuations = findContinuations(
+      //   keyDiagram,
+      //   pressedKeys,
+      //   keyId,
+      // );
+
+      // if (continuations.length > 0) {
+      //   return continuations
+      //     .map((s) => s.displayKey)
+      //     .join(" / ");
+      // }
 
       return;
     },
