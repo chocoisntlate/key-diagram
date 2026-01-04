@@ -1,43 +1,168 @@
 import { KeyDiagram } from "@/features/spec/keybindSchema";
 
 export const VSCODE_SHORTCUTS: KeyDiagram = {
-  name: "My keybinds",
-  description: "Something cool",
-  shortcuts: [
+  "name": "My AHK keybinds",
+  "description": "Capslock as modifier key",
+  "shortcuts": [
     {
-      description: ["Have a great day!"],
-      keys: ["a"],
-      displayKey: "a",
+      "displayKey": "h",
+      "keys": [
+        "caps",
+        "h"
+      ],
+      "description": [
+        "⬅️"
+      ]
     },
     {
-      description: ["Test"],
-      keys: ["shift-left", "c"],
-      displayKey: "c",
+      "displayKey": "j",
+      "keys": [
+        "caps",
+        "j"
+      ],
+      "description": [
+        "⬇️"
+      ]
     },
     {
-      description: ["Copy selected text", "and do something else"],
-      keys: ["ctrl-left", "c"],
-      displayKey: "c",
+      "displayKey": "l",
+      "keys": [
+        "caps",
+        "l"
+      ],
+      "description": [
+        "➡️"
+      ]
     },
     {
-      description: ["Paste from clipboard"],
-      keys: ["ctrl-left", "v"],
-      displayKey: "v",
+      "displayKey": "k",
+      "keys": [
+        "caps",
+        "k"
+      ],
+      "description": [
+        "⬆️"
+      ]
     },
     {
-      description: ["Save current file"],
-      keys: ["ctrl-left", "s"],
-      displayKey: "s",
+      "displayKey": "f",
+      "keys": [
+        "caps",
+        "f"
+      ],
+      "description": [
+        "Ctrl"
+      ]
     },
     {
-      description: ["Open find dialog"],
-      keys: ["ctrl-left", "f"],
-      displayKey: "f",
+      "displayKey": "d",
+      "keys": [
+        "caps",
+        "d"
+      ],
+      "description": [
+        "Shift"
+      ]
     },
     {
-      description: ["Open find and replace"],
-      keys: ["ctrl-left", "h"],
-      displayKey: "h",
+      "displayKey": "s",
+      "keys": [
+        "caps",
+        "s"
+      ],
+      "description": [
+        "Alt"
+      ]
     },
-  ],
-};
+    {
+      "displayKey": "i",
+      "keys": [
+        "caps",
+        "i"
+      ],
+      "description": [
+        "Select Line"
+      ]
+    },
+    {
+      "displayKey": "u",
+      "keys": [
+        "caps",
+        "u"
+      ],
+      "description": [
+        "Home"
+      ]
+    },
+    {
+      "displayKey": "o",
+      "keys": [
+        "caps",
+        "o"
+      ],
+      "description": [
+        "End"
+      ]
+    },
+    {
+      "displayKey": "semicolon",
+      "keys": [
+        "caps",
+        "semicolon"
+      ],
+      "description": [
+        "Backspace"
+      ]
+    },
+    {
+      "displayKey": "quote",
+      "keys": [
+        "caps",
+        "quote"
+      ],
+      "description": [
+        "Delete"
+      ]
+    },
+    {
+      "displayKey": "n",
+      "keys": [
+        "caps",
+        "n"
+      ],
+      "description": [
+        "PgDn"
+      ]
+    },
+    {
+      "displayKey": "m",
+      "keys": [
+        "caps",
+        "m"
+      ],
+      "description": [
+        "PgUp"
+      ]
+    },
+    {
+      "displayKey": "q",
+      "keys": [
+        "caps",
+        "q"
+      ],
+      "description": [
+        "PgDn"
+      ]
+    },
+    {
+      "displayKey": "w",
+      "keys": [
+        "caps",
+        "w"
+      ],
+      "description": [
+        "PgUp"
+      ]
+    }
+  ]
+}
