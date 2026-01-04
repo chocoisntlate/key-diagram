@@ -3,7 +3,7 @@
 import { useKeyboard } from "../keyboard/KeyboardContext";
 
 export default function ButtonsBar() {
-    const { setEditMode } = useKeyboard();
+  const { setInspectMode, isInspectMode } = useKeyboard();
 
   return (
     <div className="inline-flex my-3 items-center gap-3 px-4 py-2 rounded-sm border border-gray-200 bg-white">
@@ -11,9 +11,9 @@ export default function ButtonsBar() {
         className="rounded-md border border-gray-300 bg-white px-3 py-1.5
                    text-xs font-medium text-gray-700
                    hover:bg-gray-100 transition-colors"
-        onClick={() => setEditMode((prev) => !prev)}
+        onClick={() => setInspectMode((prev) => !prev)}
       >
-        Toggle edit mode
+        {isInspectMode ? "Exit inspect mode" : "Enter inspect mode"}
       </button>
     </div>
   );

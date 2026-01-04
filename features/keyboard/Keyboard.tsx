@@ -5,14 +5,14 @@ import { KeyboardLayout } from "@/features/spec/keyboardLayoutSchema";
 import { KeyDiagram, Shortcut } from "../spec/keybindSchema";
 import { Key } from "./Key";
 import { useKeyboard } from "./KeyboardContext";
-import KeybindEditor from "./KeybindEditor";
+import KeybindEditor from "../editor/KeybindEditor";
 import { getKeyDescription } from "./description";
 
 // ------------------------------------------------------------------
 // Configuration
 // ------------------------------------------------------------------
 
-const UNIT = 48;
+const UNIT = 55;
 const GAP = 4;
 
 // ------------------------------------------------------------------
@@ -24,8 +24,7 @@ function addGapCompensation(rows: KeyboardLayout["rows"], gap: number) {
     row.map((key) => ({
       ...key,
       adjustedWidth:
-        (key.widthScale ?? 1) * UNIT +
-        ((key.widthScale ?? 1) - 1) * gap,
+        (key.widthScale ?? 1) * UNIT + ((key.widthScale ?? 1) - 1) * gap,
     })),
   );
 }
@@ -35,10 +34,12 @@ function addGapCompensation(rows: KeyboardLayout["rows"], gap: number) {
 // ------------------------------------------------------------------
 
 export function Keyboard() {
-  const { keyDiagram, keyLayout, editMode } = useKeyboard();
-  const [pressedKeys, setPressedKeys] = useState<Set<string>>(() => new Set(),);
+  const { keyDiagram, keyLayout, isInspectMode } = useKeyboard();
+  const [pressedKeys, setPressedKeys] = useState<Set<string>>(() => new Set());
   const [editingKey, setEditingKey] = useState<string | null>(null);
-  const [editingShortcuts, setEditingShortcuts] = useState<KeyDiagram["shortcuts"]>([]);
+  const [editingShortcuts, setEditingShortcuts] = useState<
+    KeyDiagram["shortcuts"]
+  >([]);
 
   const keyCandidatesMap = useMemo(() => {
     if (!keyDiagram) return new Map<string, Shortcut[]>();
@@ -96,8 +97,7 @@ export function Keyboard() {
     setPressedKeys(new Set());
     setEditingKey(null);
     setEditingShortcuts([]);
-  }, [editMode]);
-
+  }, [isInspectMode]);
 
   // ------------------------------------------------------------------
   // Render
@@ -121,11 +121,14 @@ export function Keyboard() {
                   label={key.label}
                   width={key.adjustedWidth}
                   unit={UNIT}
-                  description={getKeyDescription(keyCandidatesMap.get(key.id), pressedKeys)}
+                  description={getKeyDescription(
+                    keyCandidatesMap.get(key.id),
+                    pressedKeys,
+                  )}
                   candidateCount={keyCandidatesMap.get(key.id)?.length ?? 0}
                   isPressed={pressedKeys.has(key.id)}
                   onClick={() =>
-                    editMode ? editKey(key.id) : toggleKey(key.id)
+                    isInspectMode ? editKey(key.id) : toggleKey(key.id)
                   }
                 />
               ),
@@ -151,4 +154,3 @@ export function Keyboard() {
 // ------------------------------------------------------------------
 // Editor stub (intentionally minimal)
 // ------------------------------------------------------------------
-

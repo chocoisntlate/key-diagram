@@ -12,7 +12,10 @@ export function KeyboardPanel() {
   const { keyDiagram, setKeyDiagram, keyLayout, setKeyLayout } = useKeyboard();
 
   /* Helper to import JSON and update state */
-  const handleImport = <T,>(file: File, setter: React.Dispatch<React.SetStateAction<T>>) => {
+  const handleImport = <T,>(
+    file: File,
+    setter: React.Dispatch<React.SetStateAction<T>>,
+  ) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
@@ -26,20 +29,24 @@ export function KeyboardPanel() {
   };
 
   /* Helper to export JSON */
-const handleExport = (name: string, data: object) => {
-  // sanitize name to be file-system safe
-  const safeName = name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-_]/g, "");
-  const filename = `${safeName}.keydiagram.json`;
+  const handleExport = (name: string, data: object) => {
+    // sanitize name to be file-system safe
+    const safeName = name
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-_]/g, "");
+    const filename = `${safeName}.keydiagram.json`;
 
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  link.click();
-  URL.revokeObjectURL(url);
-};
-
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <section className="flex justify-center w-full max-w-md gap-4 rounded-xl p-4">
@@ -53,11 +60,13 @@ const handleExport = (name: string, data: object) => {
             <div>Shortcuts: {keyDiagram.shortcuts.length}</div>
             <div>
               Tags:{" "}
-              {new Set(
-                keyDiagram.shortcuts
-                  .map((s) => s.tag)
-                  .filter(Boolean)
-              ).size}
+              {
+                new Set(
+                  keyDiagram.shortcuts
+                    .flatMap((s) => s.tags ?? [])
+                    .filter(Boolean),
+                ).size
+              }
             </div>
           </>
         }
@@ -85,11 +94,13 @@ const handleExport = (name: string, data: object) => {
             <div>Rows: {keyLayout.rows.length}</div>
             <div>
               Keys:{" "}
-              {new Set(
-                keyLayout.rows.flatMap((r) =>
-                  r.map((k) => k.id).filter(Boolean)
-                )
-              ).size}
+              {
+                new Set(
+                  keyLayout.rows.flatMap((r) =>
+                    r.map((k) => k.id).filter(Boolean),
+                  ),
+                ).size
+              }
             </div>
           </>
         }
@@ -131,12 +142,14 @@ function InfoRow({ title, name, description, meta, actions }: InfoRowProps) {
         </div>
       )}
 
-      <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500 justify-self-start w-max"> 
+      <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500 justify-self-start w-max">
         {title}
       </h2>
 
       <div className="flex min-w-0 flex-col gap-1 mr-auto">
-        <span className="truncate text-sm font-medium text-gray-900">{name}</span>
+        <span className="truncate text-sm font-medium text-gray-900">
+          {name}
+        </span>
         {description && (
           <span className="truncate text-xs text-gray-500">{description}</span>
         )}

@@ -8,7 +8,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <Navbar />
         {children}
-        </body>
+      </body>
     </html>
   );
 }

@@ -7,10 +7,10 @@ export default function Home() {
   return (
     <main className="overflow-hidden p-2 flex flex-col items-center gap-4 my-4">
       <KeyboardContextProvider>
-        <KeyboardPanel/>
+        <KeyboardPanel />
         <div>
-          <ButtonsBar/>
-          <Keyboard/>
+          <ButtonsBar />
+          <Keyboard />
         </div>
       </KeyboardContextProvider>
     </main>

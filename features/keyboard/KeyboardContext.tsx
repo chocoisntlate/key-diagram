@@ -11,27 +11,44 @@ type KeyboardContextType = {
   setKeyDiagram: React.Dispatch<React.SetStateAction<KeyDiagram>>;
   keyLayout: KeyboardLayout;
   setKeyLayout: React.Dispatch<React.SetStateAction<KeyboardLayout>>;
-  editMode: boolean;
-  setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
+  isInspectMode: boolean;
+  setInspectMode: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+const KeyboardContext = createContext<KeyboardContextType | undefined>(
+  undefined,
+);
 
-const KeyboardContext = createContext<KeyboardContextType | undefined>(undefined);
+export function KeyboardContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [keyDiagram, setKeyDiagram] = useState<KeyDiagram>(VSCODE_SHORTCUTS);
+  const [keyLayout, setKeyLayout] = useState<KeyboardLayout>(
+    US_QWERTY_FULL_LAYOUT,
+  );
+  const [isInspectMode, setInspectMode] = useState<boolean>(false);
 
-export function KeyboardContextProvider({children}: {children: React.ReactNode}) {
-    const [keyDiagram , setKeyDiagram] = useState<KeyDiagram>(VSCODE_SHORTCUTS);
-    const [keyLayout, setKeyLayout] = useState<KeyboardLayout>(US_QWERTY_FULL_LAYOUT);
-    const [editMode, setEditMode] = useState<boolean>(false);
-
-    return (
-        <KeyboardContext.Provider value={{ keyDiagram, setKeyDiagram, keyLayout, setKeyLayout, editMode, setEditMode }}>
-            {children}
-        </KeyboardContext.Provider>
-    );   
+  return (
+    <KeyboardContext.Provider
+      value={{
+        keyDiagram,
+        setKeyDiagram,
+        keyLayout,
+        setKeyLayout,
+        isInspectMode,
+        setInspectMode,
+      }}
+    >
+      {children}
+    </KeyboardContext.Provider>
+  );
 }
 
 export const useKeyboard = () => {
   const context = useContext(KeyboardContext);
-  if (!context) throw new Error("useKeyboard must be used within a KeyboardProvider");
+  if (!context)
+    throw new Error("useKeyboard must be used within a KeyboardProvider");
   return context;
 };

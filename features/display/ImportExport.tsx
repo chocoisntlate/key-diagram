@@ -1,16 +1,23 @@
 "use client";
 
-
 import { useRef } from "react";
 
 type ImportExportButtonProps<T> = {
   title: string;
   onClick?: () => void;
-  onFileSelect?: (file: File, contextSetter?: React.Dispatch<React.SetStateAction<T>>) => void;
-  contextSetter?:  React.Dispatch<React.SetStateAction<T>>;
+  onFileSelect?: (
+    file: File,
+    contextSetter?: React.Dispatch<React.SetStateAction<T>>,
+  ) => void;
+  contextSetter?: React.Dispatch<React.SetStateAction<T>>;
 };
 
-export function ImportExportButton<T>({ title, onClick, onFileSelect, contextSetter }: ImportExportButtonProps<T>) {
+export function ImportExportButton<T>({
+  title,
+  onClick,
+  onFileSelect,
+  contextSetter,
+}: ImportExportButtonProps<T>) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
@@ -37,7 +44,7 @@ export function ImportExportButton<T>({ title, onClick, onFileSelect, contextSet
       {onFileSelect && (
         <input
           type="file"
-        accept=".json,application/json"
+          accept=".json,application/json"
           ref={fileInputRef}
           className="hidden"
           onChange={handleFileChange}

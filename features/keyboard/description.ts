@@ -7,9 +7,7 @@ export function getKeyDescription(
   if (!candidates) return;
 
   for (const candidate of candidates) {
-    const matches = [...pressedKeys].filter((k) =>
-      candidate.keys.includes(k),
-    );
+    const matches = [...pressedKeys].filter((k) => candidate.keys.includes(k));
 
     if (
       pressedKeys.size === candidate.keys.length &&
