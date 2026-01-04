@@ -235,13 +235,15 @@ export default function KeybindEditor({
           <h3 className="text-sm font-semibold">Keybinds for "{keyId}"</h3>
 
           <div className="flex gap-2">
-            <button
-              className="text-xs text-blue-600 hover:underline"
-              onClick={handleEnterEditMode}
-              aria-label="Edit keybinds"
-            >
-              Edit keybinds
-            </button>
+            {isEditMode ? null : (
+              <button
+                className="text-xs text-blue-600 hover:underline"
+                onClick={handleEnterEditMode}
+                aria-label="Edit keybinds"
+              >
+                Edit keybinds
+              </button>
+            )}
             <button
               className="text-xs text-gray-500 hover:text-gray-700"
               onClick={onClose}
@@ -404,12 +406,12 @@ export default function KeybindEditor({
 
         {isEditMode && (
           <div className="mt-4 flex justify-end gap-2">
-            <button
+            {/* <button
               className="text-xs text-gray-600 hover:underline"
               onClick={onClose}
             >
               Cancel
-            </button>
+            </button> */}
             <button
               className="text-xs text-blue-600 hover:underline font-medium"
               onClick={saveAll}
