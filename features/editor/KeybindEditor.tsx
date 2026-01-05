@@ -24,9 +24,14 @@ export default function KeybindEditor({
 }: KeybindEditorProps) {
   const { setKeyDiagram, keyLayout } = useKeyboard();
 
-  const [draft, setDraft] = useState<Shortcut[]>(() =>
-    structuredClone(shortcuts),
-  );
+  const [draft, setDraft] = useState<Shortcut[]>(() => {
+    // Convert shortcuts to editable format (store raw string in first array element)
+    return shortcuts.map(s => ({
+      ...s,
+      keys: [s.keys.join(" + ")],
+      tags: s.tags ? [s.tags.join(", ")] : undefined,
+    }));
+  });
   const [isEditMode, setIsEditMode] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [errors, setErrors] = useState<Record<number, FieldErrors>>({});
@@ -35,18 +40,12 @@ export default function KeybindEditor({
 
   // Memoize valid key IDs to avoid recomputing on every render
   const validKeyIds = useMemo(
-    () =>
-      new Set(
-        keyLayout.rows
-          .flat()
-          .map((k) => k.id)
-          .filter(Boolean),
-      ),
-    [keyLayout.rows],
+    () => new Set(keyLayout.rows.flat().map(k => k.id).filter(Boolean)),
+    [keyLayout.rows]
   );
 
   const update = useCallback((i: number, patch: Partial<Shortcut>) => {
-    setDraft((prev) => {
+    setDraft(prev => {
       const next = [...prev];
       next[i] = { ...next[i], ...patch };
       return next;
@@ -54,18 +53,18 @@ export default function KeybindEditor({
   }, []);
 
   const normalize = useCallback((s: Shortcut): Shortcut => {
-    const rawKeys = Array.isArray(s.keys) ? (s.keys[0] ?? "") : "";
+    const rawKeys = Array.isArray(s.keys) ? s.keys[0] ?? "" : "";
     const parsedKeys = rawKeys
       .split(/[+\s]+/)
-      .map((k) => k.trim())
+      .map(k => k.trim())
       .filter(Boolean)
       .slice(0, 5);
 
     // Parse tags from space/comma-separated string
-    const rawTags = Array.isArray(s.tags) ? (s.tags[0] ?? "") : "";
+    const rawTags = Array.isArray(s.tags) ? s.tags[0] ?? "" : "";
     const parsedTags = rawTags
       .split(/[,\s]+/)
-      .map((t) => t.trim())
+      .map(t => t.trim())
       .filter(Boolean);
 
     return {
@@ -76,58 +75,55 @@ export default function KeybindEditor({
     };
   }, []);
 
-  const validateShortcut = useCallback(
-    (s: Shortcut, currentIndex: number) => {
-      const normalized = normalize(s);
+  const validateShortcut = useCallback((s: Shortcut, currentIndex: number) => {
+    const normalized = normalize(s);
 
-      // Validate that all key IDs exist in the layout
-      const invalidKey = normalized.keys.find((k) => !validKeyIds.has(k));
+    // Validate that all key IDs exist in the layout
+    const invalidKey = normalized.keys.find(k => !validKeyIds.has(k));
 
-      if (invalidKey) {
-        return {
-          success: false as const,
-          errors: {
-            keys: `Unknown key ID: "${invalidKey}"`,
-          },
-        };
+    if (invalidKey) {
+      return {
+        success: false as const,
+        errors: {
+          keys: `Unknown key ID: "${invalidKey}"`,
+        },
+      };
+    }
+
+    // Check for duplicate keybinds (same displayKey and keys combination)
+    const keysString = normalized.keys.slice().sort().join("+");
+    const duplicateIndex = draft.findIndex((existing, idx) => {
+      if (idx === currentIndex) return false; // Skip self
+      const existingNormalized = normalize(existing);
+      const existingKeys = existingNormalized.keys.slice().sort().join("+");
+      return (
+        existingNormalized.displayKey === normalized.displayKey &&
+        existingKeys === keysString
+      );
+    });
+
+    if (duplicateIndex !== -1) {
+      return {
+        success: false as const,
+        errors: {
+          keys: `Duplicate keybind: This combination already exists in entry #${duplicateIndex + 1}`,
+        },
+      };
+    }
+
+    const parsed = ShortcutSchema.safeParse(normalized);
+
+    if (!parsed.success) {
+      const fe: FieldErrors = {};
+      for (const issue of parsed.error.issues) {
+        const fieldName = issue.path[0] as keyof FieldErrors;
+        fe[fieldName] = issue.message;
       }
+      return { success: false as const, errors: fe };
+    }
 
-      // Check for duplicate keybinds (same displayKey and keys combination)
-      const keysString = normalized.keys.slice().sort().join("+");
-      const duplicateIndex = draft.findIndex((existing, idx) => {
-        if (idx === currentIndex) return false; // Skip self
-        const existingNormalized = normalize(existing);
-        const existingKeys = existingNormalized.keys.slice().sort().join("+");
-        return (
-          existingNormalized.displayKey === normalized.displayKey &&
-          existingKeys === keysString
-        );
-      });
-
-      if (duplicateIndex !== -1) {
-        return {
-          success: false as const,
-          errors: {
-            keys: `Duplicate keybind: This combination already exists in entry #${duplicateIndex + 1}`,
-          },
-        };
-      }
-
-      const parsed = ShortcutSchema.safeParse(normalized);
-
-      if (!parsed.success) {
-        const fe: FieldErrors = {};
-        for (const issue of parsed.error.issues) {
-          const fieldName = issue.path[0] as keyof FieldErrors;
-          fe[fieldName] = issue.message;
-        }
-        return { success: false as const, errors: fe };
-      }
-
-      return { success: true as const, data: normalized };
-    },
-    [normalize, validKeyIds, draft],
-  );
+    return { success: true as const, data: normalized };
+  }, [normalize, validKeyIds, draft]);
 
   const saveAll = useCallback(() => {
     const nextErrors: Record<number, FieldErrors> = {};
@@ -145,6 +141,17 @@ export default function KeybindEditor({
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
       setIsEditMode(true);
+
+      const firstErrorIndex = Number(Object.keys(nextErrors)[0]);
+      setEditingIndex(firstErrorIndex);
+
+      requestAnimationFrame(() => {
+        rowRefs.current.get(firstErrorIndex)?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      });
+
       return;
     }
 
@@ -160,8 +167,8 @@ export default function KeybindEditor({
   }, [draft, validateShortcut, setKeyDiagram, keyId, onClose]);
 
   const handleDelete = useCallback((index: number) => {
-    setDraft((d) => d.filter((_, idx) => idx !== index));
-    setErrors((prev) => {
+    setDraft(d => d.filter((_, idx) => idx !== index));
+    setErrors(prev => {
       const next = { ...prev };
       delete next[index];
       // Reindex errors for items after the deleted one
@@ -176,7 +183,7 @@ export default function KeybindEditor({
 
   const handleAddKeybind = useCallback(() => {
     const newIndex = draft.length;
-    setDraft((d) => [
+    setDraft(d => [
       ...d,
       {
         displayKey: keyId,
@@ -186,13 +193,13 @@ export default function KeybindEditor({
       } as Shortcut,
     ]);
     setEditingIndex(newIndex);
-
+    
     // Focus the first input after the new row is rendered
     requestAnimationFrame(() => {
       const newRow = rowRefs.current.get(newIndex);
-      const firstInput = newRow?.querySelector("input");
+      const firstInput = newRow?.querySelector('input');
       firstInput?.focus();
-
+      
       // Scroll to the new row
       newRow?.scrollIntoView({
         behavior: "smooth",
@@ -209,7 +216,7 @@ export default function KeybindEditor({
   // Clear errors when collapsing an item
   const handleCollapse = useCallback((index: number) => {
     setEditingIndex(null);
-    setErrors((prev) => {
+    setErrors(prev => {
       const next = { ...prev };
       delete next[index];
       return next;
@@ -221,18 +228,18 @@ export default function KeybindEditor({
       <div className="w-full max-w-md max-h-[90vh] rounded-lg bg-white p-4 shadow-lg flex flex-col">
         {/* Header */}
         <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-sm font-semibold">Keybinds for "{keyId}"</h3>
+          <h3 className="text-sm font-semibold">
+            Keybinds for "{keyId}"
+          </h3>
 
           <div className="flex gap-2">
-            {isEditMode ? null : (
-              <button
-                className="text-xs text-blue-600 hover:underline"
-                onClick={handleEnterEditMode}
-                aria-label="Edit keybinds"
-              >
-                Edit keybinds
-              </button>
-            )}
+            <button
+              className="text-xs text-blue-600 hover:underline"
+              onClick={handleEnterEditMode}
+              aria-label="Edit keybinds"
+            >
+              Edit keybinds
+            </button>
             <button
               className="text-xs text-gray-500 hover:text-gray-700"
               onClick={onClose}
@@ -253,7 +260,7 @@ export default function KeybindEditor({
             return (
               <div
                 key={i}
-                ref={(el) => {
+                ref={el => {
                   if (el) {
                     rowRefs.current.set(i, el);
                   } else {
@@ -261,7 +268,9 @@ export default function KeybindEditor({
                   }
                 }}
                 className={`rounded-md border p-3 text-xs ${
-                  hasError ? "border-red-500 bg-red-50" : "border-gray-200"
+                  hasError
+                    ? "border-red-500 bg-red-50"
+                    : "border-gray-200"
                 }`}
               >
                 {!isEditing ? (
@@ -282,17 +291,16 @@ export default function KeybindEditor({
 
                     {s.tags && s.tags.length > 0 && (
                       <div className="mt-1 flex flex-wrap gap-1">
-                        {s.tags.map(
-                          (tag, idx) =>
-                            tag && (
-                              <span
-                                key={idx}
-                                className="inline-block px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[11px]"
-                              >
-                                {tag}
-                              </span>
-                            ),
-                        )}
+                        {s.tags.map((tag, idx) => (
+                          tag && (
+                            <span
+                              key={idx}
+                              className="inline-block px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[11px]"
+                            >
+                              {tag}
+                            </span>
+                          )
+                        ))}
                       </div>
                     )}
 
@@ -325,16 +333,20 @@ export default function KeybindEditor({
                       <Input
                         value={s.displayKey}
                         error={!!e.displayKey}
-                        onChange={(v) => update(i, { displayKey: v })}
+                        onChange={v => update(i, { displayKey: v })}
                       />
                     </Field>
 
-                    <Field label="*Keys (space or '+' separated)" error={e.keys}>
+                    <Field label="*Keys (space or + separated)" error={e.keys}>
                       <Input
-                        value={s.keys[0] ?? ""}
+                        value={
+                          Array.isArray(s.keys) && s.keys.length === 1
+                            ? s.keys[0]
+                            : s.keys.join(" + ")
+                        }
                         error={!!e.keys}
-                        onChange={(v) => update(i, { keys: [v] })}
-                        placeholder="e.g. Ctrl+C or Alt Shift F"
+                        onChange={v => update(i, { keys: [v] })}
+                        placeholder="e.g. ctrl-left+t or alt-left shift-left f"
                       />
                     </Field>
 
@@ -350,7 +362,7 @@ export default function KeybindEditor({
                             : "border-gray-300 focus:border-blue-500"
                         }`}
                         value={s.description.join("\n")}
-                        onChange={(ev) =>
+                        onChange={ev =>
                           update(i, {
                             description: ev.target.value.split("\n"),
                           })
@@ -359,15 +371,12 @@ export default function KeybindEditor({
                       />
                     </Field>
 
-                    <Field
-                      label="Tags (space or ',' separated)"
-                      error={e.tags}
-                    >
+                    <Field label="Tags (space or comma separated, optional)" error={e.tags}>
                       <Input
                         value={s.tags?.[0] ?? ""}
                         error={!!e.tags}
-                        onChange={(v) => update(i, { tags: [v] as any })}
-                        placeholder="e.g. editing, navigation or windows scripts"
+                        onChange={v => update(i, { tags: [v] as any })}
+                        placeholder="e.g. editing navigation advanced"
                       />
                     </Field>
 
@@ -395,12 +404,12 @@ export default function KeybindEditor({
 
         {isEditMode && (
           <div className="mt-4 flex justify-end gap-2">
-            {/* <button
+            <button
               className="text-xs text-gray-600 hover:underline"
               onClick={onClose}
             >
               Cancel
-            </button> */}
+            </button>
             <button
               className="text-xs text-blue-600 hover:underline font-medium"
               onClick={saveAll}
@@ -427,7 +436,9 @@ function Field({
 }) {
   return (
     <label className="flex flex-col gap-1">
-      <span className="text-[11px] font-medium text-gray-600">{label}</span>
+      <span className="text-[11px] font-medium text-gray-600">
+        {label}
+      </span>
       {children}
       {error && (
         <span className="text-[11px] text-red-600" role="alert">
@@ -452,10 +463,12 @@ function Input({
   return (
     <input
       className={`rounded-md border px-2 py-1 text-xs focus:outline-none ${
-        error ? "border-red-500" : "border-gray-300 focus:border-blue-500"
+        error
+          ? "border-red-500"
+          : "border-gray-300 focus:border-blue-500"
       }`}
       value={value}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={e => onChange(e.target.value)}
       placeholder={placeholder}
     />
   );

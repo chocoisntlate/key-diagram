@@ -1,0 +1,483 @@
+import { KeyDiagram } from "@/features/spec/keybindSchema";
+
+export const INTRODUCTION_DIAGRAM: KeyDiagram = {
+  "name": "Default Introduction Diagram",
+  "description": "Hover over the number keys to learn about this tool.",
+  "shortcuts": [
+    {
+      "displayKey": "t",
+      "keys": [
+        "ctrl-left",
+        "t"
+      ],
+      "description": [
+        "🆕 New Tab - Open a new browser tab"
+      ],
+      "tags": [
+        "browser",
+        "tabs"
+      ]
+    },
+    {
+      "displayKey": "w",
+      "keys": [
+        "ctrl-left",
+        "w"
+      ],
+      "description": [
+        "✖️ Close Tab - Close current browser tab"
+      ],
+      "tags": [
+        "browser",
+        "tabs"
+      ]
+    },
+    {
+      "displayKey": "tab",
+      "keys": [
+        "ctrl-left",
+        "tab"
+      ],
+      "description": [
+        "➡️ Next Tab - Switch to next browser tab"
+      ],
+      "tags": [
+        "browser",
+        "tabs"
+      ]
+    },
+    {
+      "displayKey": "n",
+      "keys": [
+        "ctrl-left",
+        "n"
+      ],
+      "description": [
+        "🪟 New Window - Open a new browser window"
+      ],
+      "tags": [
+        "browser",
+        "windows"
+      ]
+    },
+    {
+      "displayKey": "f",
+      "keys": [
+        "ctrl-left",
+        "f"
+      ],
+      "description": [
+        "🔍 Find - Search in current page"
+      ],
+      "tags": [
+        "browser",
+        "search"
+      ]
+    },
+    {
+      "displayKey": "r",
+      "keys": [
+        "ctrl-left",
+        "r"
+      ],
+      "description": [
+        "🔄 Refresh - Reload current page"
+      ],
+      "tags": [
+        "browser",
+        "reload"
+      ]
+    },
+    {
+      "displayKey": "l",
+      "keys": [
+        "ctrl-left",
+        "l"
+      ],
+      "description": [
+        "🔗 Address Bar - Focus on URL bar"
+      ],
+      "tags": [
+        "browser",
+        "navigation"
+      ]
+    },
+    {
+      "displayKey": "p",
+      "keys": [
+        "ctrl-left",
+        "p"
+      ],
+      "description": [
+        "🖨️ Print - Open print dialog"
+      ],
+      "tags": [
+        "browser",
+        "print"
+      ]
+    },
+    {
+      "displayKey": "s",
+      "keys": [
+        "ctrl-left",
+        "s"
+      ],
+      "description": [
+        "💾 Save - Save current page or document"
+      ],
+      "tags": [
+        "file",
+        "save"
+      ]
+    },
+    {
+      "displayKey": "a",
+      "keys": [
+        "ctrl-left",
+        "a"
+      ],
+      "description": [
+        "🔤 Select All - Highlight entire document"
+      ],
+      "tags": [
+        "editing",
+        "selection"
+      ]
+    },
+    {
+      "displayKey": "c",
+      "keys": [
+        "ctrl-left",
+        "c"
+      ],
+      "description": [
+        "📋 Copy - Copy selection to clipboard"
+      ],
+      "tags": [
+        "clipboard",
+        "editing"
+      ]
+    },
+    {
+      "displayKey": "v",
+      "keys": [
+        "ctrl-left",
+        "v"
+      ],
+      "description": [
+        "📌 Paste - Insert from clipboard"
+      ],
+      "tags": [
+        "clipboard",
+        "editing"
+      ]
+    },
+    {
+      "displayKey": "x",
+      "keys": [
+        "ctrl-left",
+        "x"
+      ],
+      "description": [
+        "✂️ Cut - Cut selection to clipboard"
+      ],
+      "tags": [
+        "clipboard",
+        "editing"
+      ]
+    },
+    {
+      "displayKey": "z",
+      "keys": [
+        "ctrl-left",
+        "z"
+      ],
+      "description": [
+        "↶ Undo - Revert last action"
+      ],
+      "tags": [
+        "editing",
+        "history"
+      ]
+    },
+    {
+      "displayKey": "y",
+      "keys": [
+        "ctrl-left",
+        "y"
+      ],
+      "description": [
+        "↷ Redo - Restore undone action"
+      ],
+      "tags": [
+        "editing",
+        "history"
+      ]
+    },
+    {
+      "displayKey": "plus",
+      "keys": [
+        "ctrl-left",
+        "plus"
+      ],
+      "description": [
+        "🔍 Zoom In - Increase page zoom"
+      ],
+      "tags": [
+        "browser",
+        "zoom"
+      ]
+    },
+    {
+      "displayKey": "minus",
+      "keys": [
+        "ctrl-left",
+        "minus"
+      ],
+      "description": [
+        "🔍 Zoom Out - Decrease page zoom"
+      ],
+      "tags": [
+        "browser",
+        "zoom"
+      ]
+    },
+    {
+      "displayKey": "0",
+      "keys": [
+        "ctrl-left",
+        "0"
+      ],
+      "description": [
+        "🔍 Reset Zoom - Return to 100% zoom"
+      ],
+      "tags": [
+        "browser",
+        "zoom"
+      ]
+    },
+    {
+      "displayKey": "h",
+      "keys": [
+        "ctrl-left",
+        "h"
+      ],
+      "description": [
+        "🕐 History - Open browsing history"
+      ],
+      "tags": [
+        "browser",
+        "history"
+      ]
+    },
+    {
+      "displayKey": "j",
+      "keys": [
+        "ctrl-left",
+        "j"
+      ],
+      "description": [
+        "📥 Downloads - Open downloads page"
+      ],
+      "tags": [
+        "browser",
+        "downloads"
+      ]
+    },
+    {
+      "displayKey": "d",
+      "keys": [
+        "ctrl-left",
+        "d"
+      ],
+      "description": [
+        "⭐ Bookmark - Save current page to bookmarks"
+      ],
+      "tags": [
+        "browser",
+        "bookmarks"
+      ]
+    },
+    {
+      "displayKey": "1",
+      "keys": [
+        "1"
+      ],
+      "description": [
+        "👋 Hello!"
+      ],
+      "tags": [
+        "tutorial"
+      ]
+    },
+    {
+      "displayKey": "2",
+      "keys": [
+        "2"
+      ],
+      "description": [
+        "✨ Click the bottom-left 'Ctrl' key to reveal common Google Chrome shortcuts"
+      ],
+      "tags": [
+        "tutorial"
+      ]
+    },
+    {
+      "displayKey": "ctrl-left",
+      "keys": [
+        "ctrl-left"
+      ],
+      "description": [
+        "🎯Click me"
+      ]
+    },
+    {
+      "displayKey": "shift-left",
+      "keys": [
+        "ctrl-left",
+        "shift-left"
+      ],
+      "description": [
+        "🎯Click me"
+      ]
+    },
+    {
+      "displayKey": "4",
+      "keys": [
+        "4"
+      ],
+      "description": [
+        "⚙We can add, edit, and remove shortcuts from the diagram. Similarly, the layout of the keyboard itself can even be customized."
+      ],
+      "tags": [
+        "tutorial"
+      ]
+    },
+    {
+      "displayKey": "3",
+      "keys": [
+        "3"
+      ],
+      "description": [
+        "👀 Shortcuts are revealed when they are within two keys of completion.",
+        "👓 Clicking 'Ctrl' satisfies this condition, causing them to appear.",
+        "🟰 Since shortcuts can conflict, there is support for multiple descriptions as seen here."
+      ],
+      "tags": [
+        "tutorial"
+      ]
+    },
+    {
+      "displayKey": "t",
+      "keys": [
+        "ctrl-left",
+        "shift-left",
+        "t"
+      ],
+      "description": [
+        "🕘 Reopen Tab - Reopen last closed tab"
+      ],
+      "tags": [
+        "browser",
+        "tabs"
+      ]
+    },
+    {
+      "displayKey": "n",
+      "keys": [
+        "ctrl-left",
+        "shift-left",
+        "n"
+      ],
+      "description": [
+        "🕵️ Incognito - Open new Incognito window"
+      ],
+      "tags": [
+        "browser",
+        "windows",
+        "privacy"
+      ]
+    },
+    {
+      "displayKey": "tab",
+      "keys": [
+        "ctrl-left",
+        "shift-left",
+        "tab"
+      ],
+      "description": [
+        "⬅️ Previous Tab - Switch to previous tab"
+      ],
+      "tags": [
+        "browser",
+        "tabs"
+      ]
+    },
+    {
+      "displayKey": "b",
+      "keys": [
+        "ctrl-left",
+        "shift-left",
+        "b"
+      ],
+      "description": [
+        "📑 Bookmarks Bar - Toggle bookmarks bar"
+      ],
+      "tags": [
+        "browser",
+        "bookmarks"
+      ]
+    },
+    {
+      "displayKey": "delete",
+      "keys": [
+        "ctrl-left",
+        "shift-left",
+        "delete"
+      ],
+      "description": [
+        "🧹 Clear Data - Open Clear Browsing Data"
+      ],
+      "tags": [
+        "browser",
+        "privacy"
+      ]
+    },
+    {
+      "displayKey": "i",
+      "keys": [
+        "ctrl-left",
+        "shift-left",
+        "i"
+      ],
+      "description": [
+        "🛠️ DevTools - Open Developer Tools"
+      ],
+      "tags": [
+        "developer",
+        "tools"
+      ]
+    },
+    {
+      "displayKey": "5",
+      "keys": [
+        "5"
+      ],
+      "description": [
+        "📝 Inspect Keys display shortcuts at each key when you click on them. It also allows for shortcuts editing."
+      ],
+      "tags": [
+        "tutorial"
+      ]
+    },
+    {
+      "displayKey": "6",
+      "keys": [
+        "6"
+      ],
+      "description": [
+        "🏁 That's all you need to know. Enjoy :)"
+      ]
+    }
+  ]
+}

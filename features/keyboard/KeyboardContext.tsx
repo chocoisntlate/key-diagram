@@ -3,8 +3,8 @@
 import { createContext, useContext, useState } from "react";
 import { KeyDiagram } from "../spec/keybindSchema";
 import { KeyboardLayout } from "@/features/spec/keyboardLayoutSchema";
-import { VSCODE_SHORTCUTS } from "@/examples/default.keydiagram";
-import { QWERTY_US_80 } from "../../examples/us-qwerty-full";
+import { INTRODUCTION_DIAGRAM } from "@/examples/default.diagram";
+import { QWERTY_US_80 } from "../../examples/default.layout";
 
 type KeyboardContextType = {
   keyDiagram: KeyDiagram;
@@ -24,7 +24,7 @@ export function KeyboardContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [keyDiagram, setKeyDiagram] = useState<KeyDiagram>(VSCODE_SHORTCUTS);
+  const [keyDiagram, setKeyDiagram] = useState<KeyDiagram>(INTRODUCTION_DIAGRAM);
   const [keyLayout, setKeyLayout] = useState<KeyboardLayout>(
     QWERTY_US_80,
   );
