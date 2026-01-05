@@ -1,9 +1,9 @@
 import { KeyboardLayout } from "@/features/spec/keyboardLayoutSchema";
 
-export const US_QWERTY_FULL_LAYOUT: KeyboardLayout = {
-  name: "US QWERTY Full-Size",
+export const QWERTY_US_80: KeyboardLayout = {
+  name: "QWERTY US 80%",
   description:
-    "Full-size US QWERTY layout with F-keys, navigation cluster, and numpad",
+    "Exclusion of numpad and some navigation keys from a standard full-size keyboard.",
   rows: [
     // F-key row
     [

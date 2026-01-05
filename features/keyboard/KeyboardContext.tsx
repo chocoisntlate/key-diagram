@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from "react";
 import { KeyDiagram } from "../spec/keybindSchema";
 import { KeyboardLayout } from "@/features/spec/keyboardLayoutSchema";
 import { VSCODE_SHORTCUTS } from "@/examples/default.keydiagram";
-import { US_QWERTY_FULL_LAYOUT } from "../../examples/us-qwerty-full";
+import { QWERTY_US_80 } from "../../examples/us-qwerty-full";
 
 type KeyboardContextType = {
   keyDiagram: KeyDiagram;
@@ -26,7 +26,7 @@ export function KeyboardContextProvider({
 }) {
   const [keyDiagram, setKeyDiagram] = useState<KeyDiagram>(VSCODE_SHORTCUTS);
   const [keyLayout, setKeyLayout] = useState<KeyboardLayout>(
-    US_QWERTY_FULL_LAYOUT,
+    QWERTY_US_80,
   );
   const [isInspectMode, setInspectMode] = useState<boolean>(false);
 

@@ -145,17 +145,6 @@ export default function KeybindEditor({
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
       setIsEditMode(true);
-
-      const firstErrorIndex = Number(Object.keys(nextErrors)[0]);
-      setEditingIndex(firstErrorIndex);
-
-      requestAnimationFrame(() => {
-        rowRefs.current.get(firstErrorIndex)?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      });
-
       return;
     }
 
@@ -340,7 +329,7 @@ export default function KeybindEditor({
                       />
                     </Field>
 
-                    <Field label="*Keys (space or + separated)" error={e.keys}>
+                    <Field label="*Keys (space or '+' separated)" error={e.keys}>
                       <Input
                         value={s.keys[0] ?? ""}
                         error={!!e.keys}
@@ -371,14 +360,14 @@ export default function KeybindEditor({
                     </Field>
 
                     <Field
-                      label="Tags (space or comma separated, optional)"
+                      label="Tags (space or ',' separated)"
                       error={e.tags}
                     >
                       <Input
                         value={s.tags?.[0] ?? ""}
                         error={!!e.tags}
                         onChange={(v) => update(i, { tags: [v] as any })}
-                        placeholder="e.g. editing navigation advanced"
+                        placeholder="e.g. editing, navigation or windows scripts"
                       />
                     </Field>
 
