@@ -1,6 +1,6 @@
-import { KeyboardLayout } from "@/features/spec/keyboardLayoutSchema";
+import { Layout } from "@/features/spec/layoutSchema";
 
-export const US_QWERTY_LAYOUT: KeyboardLayout = {
+export const US_QWERTY_LAYOUT: Layout = {
   name: "US QWERTY 60% Aligned",
   description:
     "60% US QWERTY layout with properly aligned keys (15 units per row)",

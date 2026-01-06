@@ -8,7 +8,7 @@ export const ShortcutSchema = z.object({
   tags: z.array(z.string().max(100).optional()).optional(),
 });
 
-export const KeyDiagramSchema = z.object({
+export const DiagramSchema = z.object({
   name: z.string().min(1).max(100),
   description: z.string().max(500).optional(),
   createdBy: z.string().max(100).optional(),
@@ -16,5 +16,5 @@ export const KeyDiagramSchema = z.object({
   shortcuts: z.array(ShortcutSchema).min(1),
 });
 
-export type KeyDiagram = z.infer<typeof KeyDiagramSchema>;
-export type Shortcut = KeyDiagram["shortcuts"][number];
+export type Diagram = z.infer<typeof DiagramSchema>;
+export type Shortcut = Diagram["shortcuts"][number];

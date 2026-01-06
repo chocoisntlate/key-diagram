@@ -30,7 +30,7 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "tailwind.config.js",
-    "features/spec/keyboardLayoutSchema.ts"
+    "features/spec/layoutSchema.ts"
   ],
   "exclude": ["node_modules"]
 }

@@ -1,6 +1,6 @@
-import { KeyboardLayout } from "@/features/spec/keyboardLayoutSchema";
+import { Layout } from "@/features/spec/layoutSchema";
 
-export const QWERTY_US_80: KeyboardLayout = {
+export const QWERTY_US_80: Layout = {
   name: "QWERTY US 80%",
   description:
     "Exclusion of numpad and some navigation keys from a standard full-size keyboard.",

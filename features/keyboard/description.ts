@@ -1,4 +1,4 @@
-import { Shortcut } from "../spec/keybindSchema";
+import { Shortcut } from "../spec/diagramSchema";
 
 export function getKeyDescription(
   candidates: Shortcut[] | undefined,

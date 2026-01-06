@@ -13,14 +13,14 @@ export const KeySchema = z.object({
   widthScale: z.number().positive().optional(),
 });
 
-export const KeyRowSchema = z
+export const RowSchema = z
   .array(KeySchema)
   .min(1, "A row must have at least one key");
 
-export const KeyboardLayoutSchema = z.object({
+export const LayoutSchema = z.object({
   name: z.string().min(1).max(100),
   description: z.string().max(500).optional(),
-  rows: z.array(KeyRowSchema).min(1, "Layout must have at least one row"),
+  rows: z.array(RowSchema).min(1, "Layout must have at least one row"),
 });
 
-export type KeyboardLayout = z.infer<typeof KeyboardLayoutSchema>;
+export type Layout = z.infer<typeof LayoutSchema>;

@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { KeyboardLayout } from "@/features/spec/keyboardLayoutSchema";
-import { KeyDiagram, Shortcut } from "../spec/keybindSchema";
+import { Layout } from "@/features/spec/layoutSchema";
+import { Diagram, Shortcut } from "../spec/diagramSchema";
 import { Key } from "./Key";
 import { useKeyboard } from "./KeyboardContext";
-import KeybindEditor from "../editor/KeybindEditor";
+import InspectModal from "../inspect/InspectKey";
 import { getKeyDescription } from "./description";
 
 // ------------------------------------------------------------------
@@ -19,7 +19,7 @@ const GAP = 4;
 // Helpers
 // ------------------------------------------------------------------
 
-function addGapCompensation(rows: KeyboardLayout["rows"], gap: number) {
+function addGapCompensation(rows: Layout["rows"], gap: number) {
   return rows.map((row) =>
     row.map((key) => ({
       ...key,
@@ -38,7 +38,7 @@ export function Keyboard() {
   const [pressedKeys, setPressedKeys] = useState<Set<string>>(() => new Set());
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [editingShortcuts, setEditingShortcuts] = useState<
-    KeyDiagram["shortcuts"]
+    Diagram["shortcuts"]
   >([]);
 
   const keyCandidatesMap = useMemo(() => {
@@ -138,7 +138,7 @@ export function Keyboard() {
       </div>
 
       {editingKey && (
-        <KeybindEditor
+        <InspectModal
           keyId={editingKey}
           shortcuts={editingShortcuts}
           onClose={() => {

@@ -1,13 +1,17 @@
 # key-diagram
+
 Interactive keyboard shortcut visualization tool. Create, view, import, and export [Diagrams](#diagram) and [Layouts](#layout).
 
 [Preview](https://key-diagram.vercel.app/)
+
 ## Diagram
-A **Diagram** defines a collection of keyboard shortcuts and their metadata.  
+
+A **Diagram** defines a collection of keyboard shortcuts and their metadata.
 
 It is represented as a JSON object with the following structure.
 
 ### Example
+
 ```json
 {
   "name": "Google Chrome Shortcuts",
@@ -48,21 +52,22 @@ It is represented as a JSON object with the following structure.
 ```
 
 ### Diagram Structure
-| Field        | Type        | Required | Description |
-|-------------|-------------|----------|-------------|
-| `name` | string | yes | Diagram name |
-| `description` | string | no | Diagram description |
-| `createdBy` | string | no | Author of diagram |
-| `shortcuts` | Shortcut[] | yes | List of shortcuts |
+
+| Field         | Type       | Required | Description         |
+| ------------- | ---------- | -------- | ------------------- |
+| `name`        | string     | yes      | Diagram name        |
+| `description` | string     | no       | Diagram description |
+| `createdBy`   | string     | no       | Author of diagram   |
+| `shortcuts`   | Shortcut[] | yes      | List of shortcuts   |
 
 ### Shortcut Structure
 
-| Field | Type | Required | Description |
-|------|------|----------|-------------|
-| `keys` | string[] | yes | Key combination to trigger |
-| `description` | string[] | yes | One or more descriptions (for conflicts) |
-| `displayKey` | string | yes | Key to display description on |
-| `tags` | string[] | no | For grouping and filtering |
+| Field         | Type     | Required | Description                              |
+| ------------- | -------- | -------- | ---------------------------------------- |
+| `keys`        | string[] | yes      | Key combination to trigger               |
+| `description` | string[] | yes      | One or more descriptions (for conflicts) |
+| `displayKey`  | string   | yes      | Key to display description on            |
+| `tags`        | string[] | no       | For grouping and filtering               |
 
 ## Layout
 
@@ -72,6 +77,7 @@ It describes keys arranged in rows and is used to render diagrams accurately.
 It is represented as a JSON object.
 
 ### Example
+
 ```json
 {
   "name": "QWERTY US 80%",
@@ -112,29 +118,27 @@ It is represented as a JSON object.
   ]
 }
 ```
+
 ### Layout Structure
 
-| Field | Type | Required | Description |
-|------|------|----------|-------------|
-| `name` | string | yes | Layout name |
-| `description` | string | no | Layout description |
-| `rows` | KeyRow[] | yes | Keyboard rows (top to bottom) |
-
+| Field         | Type     | Required | Description                   |
+| ------------- | -------- | -------- | ----------------------------- |
+| `name`        | string   | yes      | Layout name                   |
+| `description` | string   | no       | Layout description            |
+| `rows`        | KeyRow[] | yes      | Keyboard rows (top to bottom) |
 
 ### KeyRow Structure
 
 A **KeyRow** is an ordered array of keys.
 
-| Type | Required | Description |
-|------|----------|-------------|
-| `Key[]` | yes | One keyboard row (min 1 key) |
-
+| Type    | Required | Description                  |
+| ------- | -------- | ---------------------------- |
+| `Key[]` | yes      | One keyboard row (min 1 key) |
 
 ### Key Structure
 
-| Field | Type | Required | Description |
-|------|------|----------|-------------|
-| `id` | string \| null | no | Optional unique key identifier |
-| `label` | string | yes | Text shown on the key |
-| `widthScale` | number | no | Width multiplier for larger keys (e.g. Shift, Space) |
-
+| Field        | Type           | Required | Description                                          |
+| ------------ | -------------- | -------- | ---------------------------------------------------- |
+| `id`         | string \| null | no       | Optional unique key identifier                       |
+| `label`      | string         | yes      | Text shown on the key                                |
+| `widthScale` | number         | no       | Width multiplier for larger keys (e.g. Shift, Space) |

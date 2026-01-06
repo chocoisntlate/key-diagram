@@ -1,16 +1,16 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
-import { KeyDiagram } from "../spec/keybindSchema";
-import { KeyboardLayout } from "@/features/spec/keyboardLayoutSchema";
+import { Diagram } from "../spec/diagramSchema";
+import { Layout } from "@/features/spec/layoutSchema";
 import { INTRODUCTION_DIAGRAM } from "@/examples/default.diagram";
 import { QWERTY_US_80 } from "../../examples/default.layout";
 
 type KeyboardContextType = {
-  keyDiagram: KeyDiagram;
-  setKeyDiagram: React.Dispatch<React.SetStateAction<KeyDiagram>>;
-  keyLayout: KeyboardLayout;
-  setKeyLayout: React.Dispatch<React.SetStateAction<KeyboardLayout>>;
+  keyDiagram: Diagram;
+  setKeyDiagram: React.Dispatch<React.SetStateAction<Diagram>>;
+  keyLayout: Layout;
+  setKeyLayout: React.Dispatch<React.SetStateAction<Layout>>;
   isInspectMode: boolean;
   setInspectMode: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -24,10 +24,8 @@ export function KeyboardContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [keyDiagram, setKeyDiagram] = useState<KeyDiagram>(INTRODUCTION_DIAGRAM);
-  const [keyLayout, setKeyLayout] = useState<KeyboardLayout>(
-    QWERTY_US_80,
-  );
+  const [keyDiagram, setKeyDiagram] = useState<Diagram>(INTRODUCTION_DIAGRAM);
+  const [keyLayout, setKeyLayout] = useState<Layout>(QWERTY_US_80);
   const [isInspectMode, setInspectMode] = useState<boolean>(false);
 
   return (
