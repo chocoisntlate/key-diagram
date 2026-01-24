@@ -57,17 +57,17 @@ export function KeyboardPanel() {
         description={keyDiagram.description}
         meta={
           <>
-            <div>Shortcuts: {keyDiagram.shortcuts.length}</div>
-            <div>
-              Tags:{" "}
-              {
-                new Set(
-                  keyDiagram.shortcuts
+            <MetaRow label="Name" value={keyDiagram.name} />
+            <MetaRow label="Description" value={keyDiagram.description} />
+            <MetaRow label="Shortcuts" value={keyDiagram.shortcuts.length} />
+            <MetaRow label="Tags" value={
+              new Set(
+                keyDiagram.shortcuts
                     .flatMap((s) => s.tags ?? [])
                     .filter(Boolean),
                 ).size
               }
-            </div>
+            />
           </>
         }
         actions={
@@ -91,17 +91,15 @@ export function KeyboardPanel() {
         description={keyLayout.description}
         meta={
           <>
-            <div>Rows: {keyLayout.rows.length}</div>
-            <div>
-              Keys:{" "}
-              {
-                new Set(
-                  keyLayout.rows.flatMap((r) =>
-                    r.map((k) => k.id).filter(Boolean),
-                  ),
-                ).size
-              }
-            </div>
+            <MetaRow label="Name" value={keyLayout.name} />
+            <MetaRow label="Description" value={keyLayout.description} />
+            <MetaRow label="Rows" value={keyLayout.rows.length} />
+            <MetaRow
+              label="Keys"
+              value={new Set(
+                keyLayout.rows.flatMap((r) => r.map((k) => k.id).filter(Boolean))
+              ).size}
+            />
           </>
         }
         actions={
@@ -162,6 +160,14 @@ function InfoRow({ title, name, description, meta, actions }: InfoRowProps) {
   );
 }
 
+function MetaRow({ label, value }: { label: string; value: React.ReactNode }) {
+  return (
+    <div>
+      <span className="font-bold">{label}:</span> {value}
+    </div>
+  );
+}
+
 function InfoHover({ children }: { children: React.ReactNode }) {
   return (
     <div className="group relative shrink-0">
@@ -173,7 +179,10 @@ function InfoHover({ children }: { children: React.ReactNode }) {
         i
       </button>
 
-      <div className="absolute left-0 top-full z-10 mt-1 w-48 translate-y-1 rounded-md border border-gray-200 bg-white p-3 text-xs text-gray-700 shadow-lg opacity-0 transition-all duration-150 group-hover:translate-y-0 group-hover:opacity-100 pointer-events-auto">
+      <div className="absolute left-0 top-full z-10 mt-1 w-48 translate-y-1 rounded-md border border-gray-200 bg-white p-3 text-xs text-gray-700 shadow-lg 
+                opacity-0 pointer-events-none transition-all duration-150 
+                group-hover:translate-y-0 group-hover:opacity-100 group-hover:pointer-events-auto">
+
         <div className="flex flex-col gap-1.5">{children}</div>
       </div>
     </div>
